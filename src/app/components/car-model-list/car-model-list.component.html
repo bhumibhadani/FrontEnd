@@ -1,0 +1,72 @@
+<div class="container mt-3">
+  <h2>Car Model List</h2>
+
+  <!-- Search Section -->
+  <div class="row mb-3 filter-section">
+    <div class="col-md-2 text-end">
+      <button class="btn btn-primary add-btn" (click)="addModel()">
+        <i class="bi bi-plus"></i> <!-- Bootstrap Icons add sign -->
+      </button>
+      <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchTerm" (input)="filterModels()" />
+    </div>
+  </div>
+
+  <!-- Model Table -->
+  <table mat-table matSort class="table table-bordered car-model-table">
+    <thead>
+      <tr>
+        <th mat-header-cell>Image</th>
+        <th mat-header-cell mat-sort-header>Brand</th>
+        <th mat-header-cell mat-sort-header>Class</th>
+        <th mat-header-cell mat-sort-header>Model Code</th>
+        <th mat-header-cell mat-sort-header>Model Name</th>
+        <th mat-header-cell mat-sort-header>Price</th>
+        <th mat-header-cell mat-sort-header>Date of Manufacturing
+          <button (click)="sortData('dateOfManufacturing')" class="sort-button">
+            <i
+              [ngClass]="sortField === 'dateOfManufacturing' && sortOrder === 'asc' ? 'bi bi-sort-up' : 'bi bi-sort-down'"></i>
+          </button>
+        </th>
+        <th mat-header-cell mat-sort-header>Sort Order
+          <button (click)="sortData('sortOrder')" class="sort-button">
+            <i [ngClass]="sortField === 'sortOrder' && sortOrder === 'asc' ? 'bi bi-sort-up' : 'bi bi-sort-down'"></i>
+          </button>
+        </th>
+        <th mat-header-cell>Active</th>
+        <th mat-header-cell>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let model of filteredModels">
+        <td>
+          <div *ngFor="let image of model.images">
+            <!-- Ensure the backslashes are replaced with forward slashes -->
+            <img [src]="'https://localhost:7170/' + image" alt="Model Image" class="car-thumbnail" />
+          </div>
+        </td>
+        <td>{{ model.brand }}</td>
+        <td>{{ model.class }}</td>
+        <td>{{ model.modelCode }}</td>
+        <td>{{ model.modelName }}</td>
+        <td>{{ model.price }}</td>
+        <td>{{ model.dateOfManufacturing | date }}</td>
+        <td>{{ model.sortOrder }}</td>
+        <td>{{ model.active ? 'Yes' : 'No' }}</td>
+        <td>
+          <button class="btn btn-sm btn-primary" (click)="editModel(model.id)"
+            [routerLink]="['/AddCarSystem', model.id]">
+            <i class="bi bi-pencil"></i>
+          </button>
+
+          <button class="btn btn-sm btn-danger" (click)="deleteModel(model.id)">
+            <i class="bi bi-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Paginator -->
+  <!-- <mat-paginator [length]="filteredModels.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 15]" [(page)]="page"></mat-paginator> -->
+
+</div>
